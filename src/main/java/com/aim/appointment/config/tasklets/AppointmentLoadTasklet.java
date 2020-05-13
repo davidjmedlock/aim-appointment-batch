@@ -23,7 +23,8 @@ public class AppointmentLoadTasklet implements Tasklet {
         jdbcTemplate.execute("SELECT appointment_load_002_name_npi_address_match()");
         jdbcTemplate.execute("SELECT appointment_load_003_npi_address_match()");
         jdbcTemplate.execute("SELECT appointment_load_004_npi_partial_address_match()");
-        jdbcTemplate.execute("SELECT appointment_load_005_hp_npi_only_match()");
+        jdbcTemplate.execute("SELECT appointment_load_005_provider_address_xref_match()");
+        jdbcTemplate.execute("SELECT appointment_load_998_hp_npi_only_match()");
         return RepeatStatus.FINISHED;
     }
 }

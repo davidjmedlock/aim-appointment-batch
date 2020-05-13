@@ -35,6 +35,10 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
             jdbcTemplate.query("SELECT COUNT(*) FROM tmp_appointment_load_hp_error",
                     (rs, row) -> rs.getInt(1))
                     .forEach(count -> log.info("Found {} appointment load HP error records in the database.", count));
+
+            jdbcTemplate.query("SELECT COUNT(*) FROM prov_appt_compliance",
+                    (rs, row) -> rs.getInt(1))
+                    .forEach(count -> log.info("Found {} appointment compliance records in the database.", count));
         }
     }
 }

@@ -23,7 +23,7 @@ public class AppointmentScrubTasklet implements Tasklet {
 
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-        Integer i = jdbcTemplate.queryForObject("SELECT appointment_load_00_init(?, ?)", new Object[] {fileName, tenantHashKey},
+        Integer i = jdbcTemplate.queryForObject("SELECT appointment_load_000_init(?, ?)", new Object[] {fileName, tenantHashKey},
                 (rs, row) -> rs.getInt(1));
         log.info("Updated {} rows with file name and tenant hash key: {} : {}", i, fileName, tenantHashKey);
 

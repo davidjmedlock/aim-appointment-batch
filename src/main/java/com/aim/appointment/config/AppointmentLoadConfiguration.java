@@ -2,6 +2,7 @@ package com.aim.appointment.config;
 
 import com.aim.appointment.config.tasklets.AppointmentLoadResetTasklet;
 import com.aim.appointment.config.tasklets.AppointmentLoadTasklet;
+import com.aim.appointment.config.tasklets.AppointmentRuleProcessTasklet;
 import com.aim.appointment.config.tasklets.AppointmentScrubTasklet;
 import com.aim.appointment.model.TmpAppointmentLoad;
 import org.slf4j.Logger;
@@ -104,6 +105,12 @@ public class AppointmentLoadConfiguration {
     }
 
     @Bean
+    @StepScope
+    public AppointmentRuleProcessTasklet appointmentRuleProcessTasklet() {
+        return new AppointmentRuleProcessTasklet(this.jdbcTemplate);
+    }
+
+    @Bean
     public Job importTmpAppointmentLoadJob(JobCompletionNotificationListener listener, Step loadAppointmentFile) {
         return jobBuilderFactory.get("importTmpAppointmentLoadJob")
                 .incrementer(new RunIdIncrementer())
@@ -112,6 +119,7 @@ public class AppointmentLoadConfiguration {
                 .next(loadAppointmentFile)
                 .next(appointmentScrub())
                 .next(appointmentLoad())
+                .next(appointmentRuleProcess())
                 .build();
     }
 
@@ -140,5 +148,11 @@ public class AppointmentLoadConfiguration {
     public Step appointmentLoad() {
         return stepBuilderFactory.get("providerLoad")
                 .tasklet(appointmentLoadTasklet()).build();
+    }
+
+    @Bean
+    public Step appointmentRuleProcess() {
+        return stepBuilderFactory.get("appointmentRuleProcess")
+                .tasklet(appointmentRuleProcessTasklet()).build();
     }
 }
